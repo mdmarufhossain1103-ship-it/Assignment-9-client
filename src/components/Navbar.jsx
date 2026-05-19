@@ -17,7 +17,7 @@ const Navbar = () => {
 
     return (
         <div className='mb-10 relative'>
-            <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md rounded-2xl border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] transition-all duration-300">
+            <div className=" flex items-center justify-between px-6 py-3 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md rounded-2xl border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] transition-all duration-300">
                 <div className="flex items-center">
                     <div className="hidden md:flex items-center hover:scale-105 transition-transform duration-200">
                         <Image className='object-contain' src={logo} alt='logo' width={100} height={20} />
