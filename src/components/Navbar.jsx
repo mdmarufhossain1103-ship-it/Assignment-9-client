@@ -4,9 +4,20 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import logo from '../../public/logo.png'
 import Link from 'next/link';
+import { authClient } from '@/lib/auth-client';
+import { Avatar, Button } from '@heroui/react';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const {
+        data:session,
+    }= authClient.useSession()
+    const user = session?.user;
+
+    const handleSignout = async() =>{
+        await authClient.signOut();
+    }
+
     const navLinks = [
         { href: '/', label: 'Home' },
         { href: '/ideas', label: 'Ideas' },
@@ -49,10 +60,26 @@ const Navbar = () => {
                         ))}
                     </ul>
                 </nav>
-                <div className="flex items-center">
-                    <Link href={'/login'} className="px-5 py-2 text-sm font-semibold text-white bg-linear-to-r from-indigo-500 to-purple-600 rounded-full hover:shadow-[0_4px_14px_0_rgba(99,102,241,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-                        Login
-                    </Link>
+                <div className="flex items-center gap-5">
+                   {
+                        user ? <div className="flex items-center gap-5">
+                            <Avatar>
+                                <Avatar.Image referrerPolicy='no-referrer' alt="John Doe" src={user?.image}/>
+                                <Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
+                            </Avatar>
+                            <Button onClick={handleSignout} className="px-5 py-2 text-sm font-semibold text-white bg-linear-to-r bg-red-500 rounded-full hover:shadow-[0_4px_14px_0_rgba(99,102,241,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                                Logout
+                            </Button>
+                    </div>:
+                            <div className="flex items-center gap-5">
+                                <Link href={'/login'} className="px-5 py-2 text-sm font-semibold text-white bg-linear-to-r from-indigo-500 to-purple-600 rounded-full hover:shadow-[0_4px_14px_0_rgba(99,102,241,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                                    Login
+                                </Link>
+                                <Link href={'/register'} className="px-5 py-2 text-sm font-semibold text-white bg-linear-to-r from-indigo-500 to-purple-600 rounded-full hover:shadow-[0_4px_14px_0_rgba(99,102,241,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                                    Register
+                                </Link>
+                    </div>
+                   }
                 </div>
             </div>
             {isOpen && (
