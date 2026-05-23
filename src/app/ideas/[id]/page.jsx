@@ -1,12 +1,11 @@
-import { getUsers } from '@/lib/data';
-import { Button } from '@heroui/react';
+import CommentSection from '@/components/CommentSection';
+import { getUserById } from '@/lib/data';
 import Image from 'next/image';
 import React from 'react';
 
 const DetailsPage = async({params}) => {
-    const {id} = params;
-    const idea = await getUsers(id);
-    console.log(idea)
+    const {id} = await params;
+    const idea = await getUserById(id);
     return (
         <div className="max-w-4xl mx-auto my-12 px-4">
             <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/80 rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
@@ -87,15 +86,7 @@ const DetailsPage = async({params}) => {
                             {idea.detailedDescription}
                         </p>
                     </div>
-                    <div className="pt-4 flex items-center justify-end gap-3">
-                        <Button variant="light" className="font-semibold text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200">
-                            Bookmark
-                        </Button>
-                        <Button color="primary" className="font-bold px-6 shadow-sm">
-                            Review Venture Proposal
-                        </Button>
-                    </div>
-
+                    <CommentSection ideaId={id}></CommentSection>
                 </div>
             </div>
         </div>

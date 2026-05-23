@@ -1,9 +1,12 @@
+import AddIdea from '@/components/AddIdea';
+import { createIdea} from '@/lib/data';
 import React from 'react';
+
 
 const AddIdeaPage = () => {
     return (
         <div>
-            This is add idea page
+            <AddIdea createUserAction={createIdea}></AddIdea>
         </div>
     );
 };
