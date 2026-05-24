@@ -5,7 +5,7 @@ import { Check } from "@gravity-ui/icons";
 import { Button, Description, FieldError, Form, Input, Label, ListBox, Select, SelectItem, TextArea, Textarea, TextField } from "@heroui/react";
 import { authClient } from '@/lib/auth-client';
 
-const AddIdea = ({ createUserAction}) => {
+const AddIdea = ({ createUserAction }) => {
     const [email, setEmail] = useState(null)
 
     useEffect(() => {
@@ -21,6 +21,7 @@ const AddIdea = ({ createUserAction}) => {
     return (
         <div className='flex justify-center items-center my-10'>
             <Form action={createUserAction} className="flex w-2xl flex-col gap-4 shadow-2xl rounded-2xl p-10">
+                {email ? <input type="hidden" name="email" value={email} /> : null}
                 <TextField
                     isRequired
                     name="ideaTitle"
@@ -43,12 +44,11 @@ const AddIdea = ({ createUserAction}) => {
                 </TextField>
                 <TextField
                     isRequired
-                    name="email"
                     type="email"
-                    value={email}
+                    value={email ?? ""}
                 >
                     <Label>Email</Label>
-                    <Input value={email} placeholder="User email"  disabled/>
+                    <Input value={email ?? ""} placeholder="User email" readOnly />
                     <FieldError />
                 </TextField>
                 <Select className='w-full' name='category' placeholder="Select one">
@@ -142,7 +142,7 @@ const AddIdea = ({ createUserAction}) => {
                     <FieldError />
                 </TextField>
                 <div className="flex gap-2 mt-2">
-                    <Button type="submit">
+                    <Button type="submit" isDisabled={!email}>
                         <Check />
                         Submit
                     </Button>
