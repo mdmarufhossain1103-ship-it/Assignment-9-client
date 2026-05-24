@@ -1,12 +1,17 @@
 'use client'
 import { authClient } from '@/lib/auth-client';
-import { getIdeas } from '@/lib/data';
+import { deleteIdea, getIdeas, updateIdea } from '@/lib/data';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const MyIdea = () => {
     const [ideas,setIdeas] = useState([]);
     const [loading,setLoading] = useState(true);
+
+    const [selectedIdea, setSelectedIdea] = useState(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     useEffect(() => {
         const loadIdeas = async () => {
@@ -29,6 +34,54 @@ const MyIdea = () => {
         loadIdeas();
     }, []);
 
+    const handleDelete = async() =>{
+        try{
+            const result = await deleteIdea(selectedIdea._id);
+
+            if(result.deletedCount > 0){
+                setIdeas((prev) => prev.filter((idea) =>idea._id !== selectedIdea._id));
+                toast.success("Idea deleted successfully");
+                setIsDeleteModalOpen(false);
+            }
+        } catch (error) {
+            console.log("Failed to updated idea");
+            toast.error("Failed to delete idea");
+        }
+    };
+
+    const handleUpdate = async(e) =>{
+        e.preventDefault();
+        const form = e.target;
+
+        const updateIdeaData = {
+            ideaTitle: form.ideaTitle.value,
+            shortDescription: form.shortDescription.value,
+            category: form.category.value,
+            targetAudience: form.targetAudience.value,
+            problemStatement: form.problemStatement.value,
+            proposedSolution: form.proposedSolution.value,
+            detailedDescription: form.detailedDescription.value,
+        };
+
+        try {
+            const result = await updateIdea(
+                selectedIdea._id,
+                updateIdeaData
+            );
+
+            if (result.modifiedCount > 0){
+                setIdeas((prev) => prev.map((idea) => idea._id === selectedIdea._id? {
+                    ...idea,
+                    ...updateIdeaData,
+                }: idea ));
+                toast.success("Idea updated successfully")
+                setIsEditModalOpen(false);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Failed to update idea");
+        }
+    }
 
     if (loading){
         return <p>Loading...</p>;
@@ -124,6 +177,18 @@ const MyIdea = () => {
                                                     <p className="text-sm md:text-base leading-relaxed text-zinc-600 dark:text-zinc-300 whitespace-pre-line">
                                                         {idea?.detailedDescription}
                                                     </p>
+
+                                                    <div className='flex gap-3'>
+                                                        <button onClick={() =>{
+                                                            setSelectedIdea(idea);
+                                                            setIsEditModalOpen(true);
+                                                        }} className='px-4 py-2 rounded-xl bg-indigo-600 text-white'>Update</button>
+
+                                                        <button onClick={() =>{
+                                                            setSelectedIdea(idea);
+                                                            setIsDeleteModalOpen(true);
+                                                        }} className='px-4 py-2 rounded-xl bg-red-600 text-white'>Delete</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -135,6 +200,115 @@ const MyIdea = () => {
                 </div>)
             }
             </div>
+
+            {
+                isEditModalOpen && selectedIdea && (
+                    <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
+                        <div className='bg-white dark:bg-zinc-900 p-6 rounded-2xl w-full max-w-xl'>
+                            <h2 className='text-2xl font-bold mb-6'>Update Idea</h2>
+                            <form onSubmit={handleUpdate} className='space-y-4'>
+                                <input
+                                    name="ideaTitle"
+                                    defaultValue={
+                                        selectedIdea.ideaTitle
+                                    }
+                                    className="w-full border p-3 rounded-xl"
+                                />
+
+                                <input
+                                    name="shortDescription"
+                                    defaultValue={
+                                        selectedIdea.shortDescription
+                                    }
+                                    className="w-full border p-3 rounded-xl"
+                                />
+
+                                <input
+                                    name="category"
+                                    defaultValue={
+                                        selectedIdea.category
+                                    }
+                                    className="w-full border p-3 rounded-xl"
+                                />
+
+                                <input
+                                    name="targetAudience"
+                                    defaultValue={
+                                        selectedIdea.targetAudience
+                                    }
+                                    className="w-full border p-3 rounded-xl"
+                                />
+
+                                <textarea
+                                    name="problemStatement"
+                                    defaultValue={
+                                        selectedIdea.problemStatement
+                                    }
+                                    className="w-full border p-3 rounded-xl"
+                                />
+
+                                <textarea
+                                    name="proposedSolution"
+                                    defaultValue={
+                                        selectedIdea.proposedSolution
+                                    }
+                                    className="w-full border p-3 rounded-xl"
+                                />
+
+                                <textarea
+                                    name="detailedDescription"
+                                    defaultValue={
+                                        selectedIdea.detailedDescription
+                                    }
+                                    className="w-full border p-3 rounded-xl"
+                                />
+
+                                <div className="flex justify-end gap-3">
+
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setIsEditModalOpen(
+                                                false
+                                            )
+                                        }
+                                        className="px-4 py-2 rounded-xl bg-zinc-300"
+                                    >
+                                        Cancel
+                                    </button>
+
+                                    <button
+                                        type="submit"
+                                        className="px-4 py-2 rounded-xl bg-indigo-600 text-white"
+                                    >
+                                        Save Changes
+                                    </button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )
+            }
+
+            {
+                isDeleteModalOpen && selectedIdea && (
+                    <div className='fixed inset-0 bg-black/50 items-center justify-center z-50'>
+                        <div className='bg-white dark:bg-zinc-900 p-6 rounded-2xl w-full max-w-md'>
+                            <h2 className='text-2xl font-bold mb-4'>Delete Idea</h2>
+
+                            <p className='mb-6'>Are you sure want to delete this idea?</p>
+
+                            <div className='flex justify-end gap-3'>
+                                <button onClick={() => setIsDeleteModalOpen(false)} className='px-4 py-2 rounded-xl bg-zinc-300'>
+                                    Cancel
+                                </button>
+                                <button onClick={handleDelete} className='px-4 py-2 rounded-xl bg-red-600 text-white'>Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
         </div>
     );
 };

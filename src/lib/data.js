@@ -16,6 +16,38 @@ export const getIdeas = async (email) => {
     return data;
 };
 
+export const updateIdea = async(ideaId,updatedIdea) =>{
+    const res = await fetch(`http://localhost:5000/ideas/${ideaId}`,{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedIdea),
+    });
+
+    const data = await res.json();
+
+    if(data.modifiedCount > 0){
+        revalidatePath('/ideas');
+    }
+
+    return data;
+}
+
+
+
+export const deleteIdea = async (ideaId) =>{
+    const res = await fetch(`http://localhost:5000/ideas/${ideaId}`,{
+        method: "DELETE",
+    });
+
+    const data = await res.json();
+    if(data.deletedCount > 0){
+        revalidatePath('/ideas');
+    }
+    return data;
+}
+
 export const getUserById = async (userId) => {
     console.log(userId);
     const res = await fetch(`http://localhost:5000/users/${userId}`);
