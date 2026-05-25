@@ -1,11 +1,18 @@
 import CommentSection from '@/components/CommentSection';
+import { auth } from '@/lib/auth';
 import { getUserById } from '@/lib/data';
+import { headers } from 'next/headers';
 import Image from 'next/image';
 import React from 'react';
 
 const DetailsPage = async({params}) => {
     const {id} = await params;
     const idea = await getUserById(id);
+
+    const session = await auth.api.getSession({
+        headers:await headers()
+    });
+
     return (
         <div className="max-w-4xl mx-auto my-12 px-4">
             <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/80 rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
@@ -86,7 +93,7 @@ const DetailsPage = async({params}) => {
                             {idea.detailedDescription}
                         </p>
                     </div>
-                    <CommentSection ideaId={id}></CommentSection>
+                    <CommentSection ideaId={id} session={session}></CommentSection>
                 </div>
             </div>
         </div>

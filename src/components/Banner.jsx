@@ -1,5 +1,7 @@
+'use client';
+
 import { Button } from '@heroui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 const slides = [
@@ -24,11 +26,19 @@ const slides = [
 ];
 
 const Banner = () => {
+    const [current,setCurrent] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrent((prev) => (prev+1) % slides.length)
+        },4000)
+    },[]);
+    
     return (
         <section className='relative w-full overflow-hidden my-15'>
             <div className='carousel w-full h-[100vh]'>
                 {slides.map((slide, index) => (
-                    <div key={slide.id} id={`slide${slide.id}`} className='carousel-item relative w-full'>
+                    <div key={slide.id}  className={`absolute top-0 left-0 w-full transition-opacity duration-700 ${index === current ? "opacity-100" : "opacity-0"}`}>
                         <img src={slide.image} alt={slide.title} className='w-full object-cover' />
                         <div className='absolute inset-0 bg-black/60'></div>
                         <div className='absolute inset-0 flex items-center justify-center px-6'>

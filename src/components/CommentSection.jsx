@@ -3,9 +3,8 @@ import { createComment, deleteComment, getCommentsByIdeaId, updateComment } from
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-const CommentSection = ({ ideaId }) => {
+const CommentSection = ({ ideaId,session }) => {
     const [comments,setComments] = useState([]);
-    const [authorName,setAuthorName] = useState('');
     const [newCommentText, setNewCommentText] = useState('');
     const [loading,setLoading] = useState(true);
     const [editingCommentId, setEditingCommentId] = useState(null);
@@ -26,19 +25,19 @@ const CommentSection = ({ ideaId }) => {
         fetchComments();
     },[ideaId]);
 
-    console.log(comments);
 
     const handleAddComment = async (e) => {
 
         e.preventDefault();
 
-        if (!newCommentText.trim() || !authorName.trim()) return;
+        if (!newCommentText.trim() ) return;
 
         try {
 
             const commentData = {
                 ideaId,
-                userName: authorName,
+                userName: session?.user?.name,
+                email: session?.user?.email,
                 text: newCommentText
             };
 
@@ -47,13 +46,13 @@ const CommentSection = ({ ideaId }) => {
             setComments([createdComment, ...comments]);
 
             setNewCommentText('');
-            setAuthorName('');
 
             toast.success('Comment added successfully');
 
         } catch (error) {
 
             console.error('Error creating comment:', error);
+            toast.error('Failed to post comment');
 
         }
     };
@@ -148,14 +147,14 @@ const CommentSection = ({ ideaId }) => {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 
-                        <input
+                        {/* <input
                             type="text"
                             placeholder="Your Name"
                             value={authorName}
                             onChange={(e) => setAuthorName(e.target.value)}
                             className="md:col-span-1 px-4 py-2.5 rounded-xl text-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                             required
-                        />
+                        /> */}
 
                         <input
                             type="text"

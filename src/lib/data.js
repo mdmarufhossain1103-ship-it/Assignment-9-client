@@ -16,6 +16,13 @@ export const getIdeas = async (email) => {
     return data;
 };
 
+export const getUserByComments = async(email) =>{
+    const res = await fetch(`http://localhost:5000/comments?email=${email}`);
+    const data = await res.json();
+
+    return data;
+}
+
 export const updateIdea = async(ideaId,updatedIdea) =>{
     const res = await fetch(`http://localhost:5000/ideas/${ideaId}`,{
         method: "PATCH",
