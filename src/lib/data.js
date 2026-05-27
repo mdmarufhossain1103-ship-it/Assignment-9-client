@@ -10,8 +10,35 @@ export const getUsers = async () => {
     return data;
 };
 
-export const getIdeas = async (email) => {
-    const res = await fetch(`http://localhost:5000/ideas?email=${email}`);
+
+export const updateUser = async(email,updatedFields) =>{
+    if (!email) return {error: "Email is required"};
+
+    const res = await fetch(`http://localhost:5000/users/${email}`,{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedFields),
+    });
+
+    const data = await res.json();
+
+    return data;
+}
+
+export const getIdeas = async ({email= "",search="",category ="",startDate ="", endDate = ""} = {}) => {
+    const params = new URLSearchParams();
+
+    if (email) params.append("email", email);
+    if(search) params.append("search", search);
+    if(category) params.append("category",category);
+    if(startDate) params.append("startDate", startDate);
+    if(endDate) params.append("endDate", endDate);
+
+    const res = await fetch(`http://localhost:5000/ideas?${params.toString()}`,{
+        cache: "no-store"
+    });
     const data = await res.json();
     return data;
 };
@@ -140,6 +167,7 @@ export const createIdea = async (formData) => {
 
     if (data.insertedId) {
         revalidatePath("/ideas");
+        revalidatePath("/users");
     }
     return data;
 };

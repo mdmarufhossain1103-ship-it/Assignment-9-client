@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@heroui/react';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 
@@ -36,7 +37,7 @@ const Banner = () => {
     
     return (
         <section className='relative w-full overflow-hidden my-15'>
-            <div className='carousel w-full h-[100vh]'>
+            <div className='carousel w-full h-[30vh] md:h-[100vh]'>
                 {slides.map((slide, index) => (
                     <div key={slide.id}  className={`absolute top-0 left-0 w-full transition-opacity duration-700 ${index === current ? "opacity-100" : "opacity-0"}`}>
                         <img src={slide.image} alt={slide.title} className='w-full object-cover' />
@@ -46,7 +47,7 @@ const Banner = () => {
                                 <h1 className='text-4xl md:text-6xl font-bold leading-tight'>{slide.title}</h1>
                                 <p className='mt-6 text-lg md:text-xl text-gray-200'>{slide.description}</p>
                                 <div className='mt-8'>
-                                    <Button size="lg" color="primary" className='font-semibold px-8'>Explore Ideas</Button>
+                                    <Button size="lg" color="primary" className='font-semibold px-8 cursor-pointer'><Link href={'/ideas'}>Explore Ideas</Link></Button>
                                 </div>
                             </div>
                         </div>

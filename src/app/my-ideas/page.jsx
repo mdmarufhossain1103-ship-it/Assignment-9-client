@@ -16,6 +16,7 @@ const MyIdea = () => {
     useEffect(() => {
         const loadIdeas = async () => {
             try {
+                setLoading(true);
                 const session = await authClient.getSession();
                 const email = session?.data?.user?.email;
 
@@ -23,7 +24,7 @@ const MyIdea = () => {
                     setLoading(false);
                     return;
                 }
-                const data = await getIdeas(email);
+                const data = await getIdeas({email: email});
                 setIdeas(data || []);
             } catch (error) {
                 console.log(error);
@@ -182,12 +183,12 @@ const MyIdea = () => {
                                                         <button onClick={() =>{
                                                             setSelectedIdea(idea);
                                                             setIsEditModalOpen(true);
-                                                        }} className='px-4 py-2 rounded-xl bg-indigo-600 text-white'>Update</button>
+                                                        }} className='px-4 py-2 rounded-xl bg-indigo-600 text-white cursor-pointer'>Update</button>
 
                                                         <button onClick={() =>{
                                                             setSelectedIdea(idea);
                                                             setIsDeleteModalOpen(true);
-                                                        }} className='px-4 py-2 rounded-xl bg-red-600 text-white'>Delete</button>
+                                                        }} className='px-4 py-2 rounded-xl bg-red-600 text-white cursor-pointer'>Delete</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -272,14 +273,14 @@ const MyIdea = () => {
                                                 false
                                             )
                                         }
-                                        className="px-4 py-2 rounded-xl bg-zinc-300"
+                                        className="px-4 py-2 rounded-xl bg-zinc-300 cursor-pointer"
                                     >
                                         Cancel
                                     </button>
 
                                     <button
                                         type="submit"
-                                        className="px-4 py-2 rounded-xl bg-indigo-600 text-white"
+                                        className="px-4 py-2 rounded-xl bg-indigo-600 text-white cursor-pointer"
                                     >
                                         Save Changes
                                     </button>
@@ -300,10 +301,10 @@ const MyIdea = () => {
                             <p className='mb-6'>Are you sure want to delete this idea?</p>
 
                             <div className='flex justify-end gap-3'>
-                                <button onClick={() => setIsDeleteModalOpen(false)} className='px-4 py-2 rounded-xl bg-zinc-300'>
+                                <button onClick={() => setIsDeleteModalOpen(false)} className='px-4 py-2 rounded-xl bg-zinc-300 cursor-pointer'>
                                     Cancel
                                 </button>
-                                <button onClick={handleDelete} className='px-4 py-2 rounded-xl bg-red-600 text-white'>Delete</button>
+                                <button onClick={handleDelete} className='px-4 py-2 rounded-xl bg-red-600 text-white cursor-pointer'>Delete</button>
                             </div>
                         </div>
                     </div>

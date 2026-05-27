@@ -4,23 +4,41 @@ import React, { useEffect, useState } from 'react';
 import { Check } from "@gravity-ui/icons";
 import { Button, Description, FieldError, Form, Input, Label, ListBox, Select, SelectItem, TextArea, Textarea, TextField } from "@heroui/react";
 import { authClient } from '@/lib/auth-client';
+import toast from 'react-hot-toast';
 
 const AddIdea = ({ createUserAction }) => {
     const [email, setEmail] = useState(null)
-
     useEffect(() => {
         const fetchSession = async () => {
             const session = await authClient.getSession()
             const email = session?.data?.user?.email
             setEmail(email)
         }
-
         fetchSession()
     }, [])
 
+    const handleSubmit = async(e) =>{
+        e.preventDefault();
+        
+        const formData = new FormData(e.currentTarget);
+
+        try {
+            await createUserAction(formData);
+
+            toast.success("Idea submitted successfully!");
+            e.target.reset();
+        } catch (error) {
+            toast.error("Something went wrong!");
+        } 
+    };
+
     return (
-        <div className='flex justify-center items-center my-10'>
-            <Form action={createUserAction} className="flex w-2xl flex-col gap-4 shadow-2xl rounded-2xl p-10">
+        <div  className="min-h-screen bg-zinc-100 dark:bg-zinc-950 flex justify-center items-center px-4 py-10">
+            <Form onSubmit={handleSubmit} action={createUserAction} className="w-full max-w-3xl bg-white dark:bg-zinc-900 shadow-lg rounded-2xl p-8 flex flex-col gap-5">
+                <div className="mb-4">
+                    <h1 className="text-3xl font-bold text-zinc-800 dark:text-white">Submit Your Startup Idea</h1>
+                    <p className="text-zinc-500 dark:text-zinc-400 mt-1">Share your innovative startup concept with the community.</p>
+                </div>
                 {email ? <input type="hidden" name="email" value={email} /> : null}
                 <TextField
                     isRequired
@@ -39,7 +57,7 @@ const AddIdea = ({ createUserAction }) => {
                     validate={(value) => value.length < 10 ? "Short description must be at least 10 characters" : null}
                 >
                     <Label>Short Description</Label>
-                    <Input placeholder="One-sentence elevator pitch" />
+                    <Input placeholder="Enter short description for your idea" />
                     <FieldError />
                 </TextField>
                 <TextField
@@ -85,7 +103,7 @@ const AddIdea = ({ createUserAction }) => {
 
                 <TextField isRequired name="targetAudience" type="text">
                     <Label>Target Audience</Label>
-                    <Input placeholder="Who is this product for?" />
+                    <Input placeholder="Enter targetAudience for your idea" />
                     <FieldError />
                 </TextField>
                 <div className="flex flex-col gap-1">
@@ -127,17 +145,17 @@ const AddIdea = ({ createUserAction }) => {
                     }}
                 >
                     <Label>Image URL</Label>
-                    <Input placeholder="https://example.com/image.png" />
+                    <Input placeholder="Enter a image url" />
                     <FieldError />
                 </TextField>
                 <TextField name="estimatedBudget" type="number">
                     <Label>Estimated Budget ($)</Label>
-                    <Input placeholder="e.g. 50000 (Optional)" />
+                    <Input placeholder="Enter setimated Budget" />
                     <FieldError />
                 </TextField>
                 <TextField name="tags" type="text">
                     <Label>Tags</Label>
-                    <Input placeholder="saas, ai, automation" />
+                    <Input placeholder="Enter tags" />
                     <Description>Separate multiple tags using commas</Description>
                     <FieldError />
                 </TextField>

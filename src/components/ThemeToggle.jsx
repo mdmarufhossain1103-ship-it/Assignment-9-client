@@ -10,16 +10,16 @@ const ThemeToggle = () => {
             {({ isSelected }) => (
                 <>
                     <Switch.Control
-                        className={`h-[31px] w-[51px] bg-blue-500 ${isSelected ? "bg-white shadow-[0_0_12px_rgba(6,182,212,0.5)]" : ""}`}
+                        className={`h-[31px] w-[51px] bg-white ${isSelected ? "bg-black shadow-[0_0_12px_rgba(6,182,212,0.5)]" : ""}`}
                     >
                         <Switch.Thumb
-                            className={`size-[27px] bg-white shadow-sm ${isSelected ? "ms-[22px] shadow-lg" : ""}`}
+                            className={`size-[27px] bg-black shadow-sm ${isSelected ? "bg-white ms-[22px] shadow-lg" : ""}`}
                         >
                             <Switch.Icon>
                                 {isSelected ? (
-                                    <Sun className="size-4 text-cyan-600" />
+                                    <Sun className="size-4  text-cyan-600" />
                                 ) : (
-                                    <Moon className="size-4 text-blue-600" />
+                                    <Moon className="size-4  text-blue-600" />
                                 )}
                             </Switch.Icon>
                         </Switch.Thumb>

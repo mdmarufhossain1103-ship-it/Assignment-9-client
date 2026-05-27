@@ -35,8 +35,13 @@ const LoginPage = () => {
         });
     }
     return (
-        <div className='flex justify-center items-center my-10'>
-            <Form onSubmit={onSubmit} className="flex max-w-2xl flex-col gap-4 shadow-lg p-10 rounded-2xl" >
+        <div className="min-h-screen flex items-center justify-center bg-zinc-100 dark:bg-zinc-950 px-4 my-10">
+            <div className="w-full max-w-md bg-white dark:bg-zinc-900 shadow-lg rounded-2xl p-8">
+                <div className="text-center mb-8">
+                    <h1 className="text-3xl font-bold text-zinc-800 dark:text-white">Welcome Back</h1>
+                    <p className="text-zinc-500 dark:text-zinc-400 mt-2">Login to your account</p>
+                </div>
+                 <Form onSubmit={onSubmit} className="flex max-w-2xl flex-col gap-4  p-10 rounded-2xl" >
                 <TextField
                     isRequired
                     name="email"
@@ -111,7 +116,7 @@ const LoginPage = () => {
                     <div>
                         <button
                             type="button" onClick={handleGoogleSignin}
-                            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-900 text-sm font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 shadow-sm transition-all duration-200 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-zinc-950"
+                            className="w-full cursor-pointer flex itew-full flex items-center justify-center gap-3 px-4 py-3 border border-zinc-200 dark:border-zinc-700 rounded-xl bg-white dark:bg-zinc-900 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 transitionms-center justify-center gap-3 px-4 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-900 text-sm font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 shadow-sm transition-all duration-200 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-zinc-950"
                         >
                             <FaGoogle className="text-lg text-red-500 dark:text-red-400" />
                             Sign in with Google
@@ -129,6 +134,7 @@ const LoginPage = () => {
 
                 </div>
             </Form>
+            </div>
         </div>
     );
 };
