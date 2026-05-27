@@ -35,7 +35,7 @@ const Navbar = () => {
 
     return (
         <div className="relative z-50">
-            <div className="flex items-center justify-between px-6 py-3 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md  border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] transition-all duration-300">
+            <div className="flex items-center justify-between px-6 py-3 bg-white/20 dark:bg-zinc-900/70 backdrop-blur-md  border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] transition-all duration-300">
                 <div className="flex items-center gap-3">
 
                     <div className="hidden md:flex items-center hover:scale-105 transition-transform duration-200">

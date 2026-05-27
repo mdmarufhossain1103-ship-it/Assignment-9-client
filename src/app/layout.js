@@ -32,12 +32,12 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        {/* <NextThemeProvider> */}
+        <NextThemeProvider>
           <Navbar></Navbar>
           {children}
           <Footer></Footer>
           <Toaster />
-        {/* </NextThemeProvider> */}
+        </NextThemeProvider>
         </body>
     </html>
   );

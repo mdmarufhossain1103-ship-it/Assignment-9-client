@@ -88,7 +88,7 @@ const MyIdea = () => {
         return <p>Loading...</p>;
     }
     return (
-        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-10">
+        <div className=" bg-zinc-50 dark:bg-zinc-950 py-10">
             <div className="max-w-6xl mx-auto px-4">
 
                 <h1 className="text-3xl font-extrabold text-zinc-800 dark:text-white mb-10">
